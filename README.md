@@ -38,6 +38,9 @@ Our key idea is to contract the space into a sphere and then perform **adaptive 
 - **In-Depth Practitioner Guide** – Comprehensive tutorial on the full 2D Gaussian Splatting pipeline (theory to implementation) by Shubham Anand  
   [LearnOpenCV Blog Post](https://learnopencv.com/2d-gaussian-splatting/)
 
+- **Diff-Surfel-Tracing** - A differentiable ray-tracing implementation built on the surfel representation by [xbillowy](https://github.com/xbillowy)
+   https://github.com/xbillowy/diff-surfel-tracing
+
 ## SIBR Viewer
 
 
