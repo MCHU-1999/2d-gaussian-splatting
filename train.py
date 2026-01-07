@@ -108,6 +108,15 @@ def training(dataset, opt, pipe, testing_iterations, saving_iterations, checkpoi
                 progress_bar.set_postfix(loss_dict)
 
                 progress_bar.update(10)
+
+            # Log loss_dict to file every 1000 iterations
+            if iteration % 1000 == 0:
+                loss_log_file = os.path.join(args.model_path, "loss_log.txt")
+                with open(loss_log_file, 'a') as f:
+                    if iteration == 1000:  # Write header on first log
+                        f.write("iteration,loss,distort,normal,points\n")
+                    f.write(f"{iteration},{ema_loss_for_log:.6f},{ema_dist_for_log:.6f},{ema_normal_for_log:.6f},{len(gaussians.get_xyz)}\n")
+
             if iteration == opt.iterations:
                 progress_bar.close()
 
@@ -261,6 +270,7 @@ if __name__ == "__main__":
     parser.add_argument("--test_iterations", nargs="+", type=int, default=[7_000, 30_000])
     parser.add_argument("--save_iterations", nargs="+", type=int, default=[7_000, 30_000])
     parser.add_argument("--quiet", action="store_true")
+    parser.add_argument('--disable_viewer', action='store_true', default=False)
     parser.add_argument("--checkpoint_iterations", nargs="+", type=int, default=[])
     parser.add_argument("--start_checkpoint", type=str, default = None)
     args = parser.parse_args(sys.argv[1:])
@@ -272,7 +282,8 @@ if __name__ == "__main__":
     safe_state(args.quiet)
 
     # Start GUI server, configure and run training
-    network_gui.init(args.ip, args.port)
+    if not args.disable_viewer:
+        network_gui.init(args.ip, args.port)
     torch.autograd.set_detect_anomaly(args.detect_anomaly)
     training(lp.extract(args), op.extract(args), pp.extract(args), args.test_iterations, args.save_iterations, args.checkpoint_iterations, args.start_checkpoint)
 
