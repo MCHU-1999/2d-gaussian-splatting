@@ -23,12 +23,12 @@ if not args.skip_training:
     for scene in tnt_360_scenes:
         source = args.TNT_data + "/" + scene
         print("python train.py -s " + source + " -m " + args.output_path + "/" + scene + common_args + ' --lambda_dist 100')
-        os.system("python train.py -s " + source + " -m " + args.output_path + "/" + scene + common_args)
+        os.system("python train.py -s " + source + " -m " + args.output_path + "/" + scene + common_args + ' --lambda_dist 100')
 
     for scene in tnt_large_scenes:
         source = args.TNT_data + "/" + scene
         print("python train.py -s " + source + " -m " + args.output_path + "/" + scene + common_args+ ' --lambda_dist 10')
-        os.system("python train.py -s " + source + " -m " + args.output_path + "/" + scene + common_args)
+        os.system("python train.py -s " + source + " -m " + args.output_path + "/" + scene + common_args + ' --lambda_dist 10')
 
 
 if not args.skip_rendering:
@@ -48,6 +48,7 @@ if not args.skip_rendering:
 if not args.skip_metrics:
     script_dir = os.path.dirname(os.path.abspath(__file__))
     all_scenes = tnt_360_scenes + tnt_large_scenes
+    iteration = 30000
 
     for scene in all_scenes:
         ply_file = f"{args.output_path}/{scene}/train/ours_{iteration}/fuse_post.ply"
